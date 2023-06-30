@@ -50,7 +50,6 @@ export default function Movies() {
 
   return (
     <main>
-      <div>Movies Page</div>
       <Seearchbar onSubmit={handleSubmit} />
       {error && <NotFound />}
       {!error && movieName && <MovieList movies={movies} />}
