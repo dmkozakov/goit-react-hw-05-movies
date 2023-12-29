@@ -1,6 +1,10 @@
-import PropTypes from 'prop-types';
+import { FormEvent } from 'react';
 
-export default function Seearchbar({ onSubmit }) {
+interface Props {
+  onSubmit: (e: FormEvent) => void;
+}
+
+export default function Searchbar({ onSubmit }: Props) {
   return (
     <form onSubmit={onSubmit}>
       <input type="text" name="search" onChange={e => e.target.value} />
@@ -8,7 +12,3 @@ export default function Seearchbar({ onSubmit }) {
     </form>
   );
 }
-
-Seearchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};

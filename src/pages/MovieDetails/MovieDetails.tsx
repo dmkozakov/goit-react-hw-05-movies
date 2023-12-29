@@ -4,19 +4,25 @@ import * as movieAPI from 'services/movie-api';
 import { normalizeSingleMovie } from 'helpers/normalizeMovies';
 import NotFound from 'pages/NotFound/NotFound';
 import MovieCard from 'components/MovieCard/MovieCard';
+import { IMovie } from 'interfaces/IMovie';
 
 export default function MovieDetails() {
-  const { id } = useParams();
-  const [movie, setMovie] = useState({});
-  const [error, setError] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const [movie, setMovie] = useState<IMovie | null>(null);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
-        const response = await movieAPI.getMovieDetails(id);
+        if (id) {
+          const response = await movieAPI.getMovieDetails(id);
 
-        const normalizedMovie = normalizeSingleMovie(response.data);
-        setMovie(normalizedMovie);
+          const normalizedMovie = normalizeSingleMovie(response.data);
+
+          if (normalizedMovie) {
+            setMovie(normalizedMovie);
+          }
+        }
       } catch (error) {
         console.log(error);
         setError(true);
@@ -26,5 +32,7 @@ export default function MovieDetails() {
     fetchMovieDetails();
   }, [id]);
 
-  return <main>{error ? <NotFound /> : <MovieCard movie={movie} />}</main>;
+  return (
+    <main>{error ? <NotFound /> : movie && <MovieCard movie={movie} />}</main>
+  );
 }

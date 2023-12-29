@@ -1,6 +1,10 @@
-import React from 'react';
+import { ICast } from 'interfaces/ICast';
 
-export default function CastItem({ cast }) {
+interface Props {
+  cast: ICast;
+}
+
+export default function CastItem({ cast }: Props) {
   const { profile_path, name, character } = cast;
 
   return (

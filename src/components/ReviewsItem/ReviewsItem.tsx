@@ -1,6 +1,10 @@
-import React from 'react';
+import { INormalizedReview } from 'interfaces/IReviews';
 
-export default function ReviewsItem({ reviews }) {
+interface Props {
+  reviews: INormalizedReview;
+}
+
+export default function ReviewsItem({ reviews }: Props) {
   const { author, avatar_path, content } = reviews;
   return (
     <li>

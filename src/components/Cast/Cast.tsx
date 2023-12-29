@@ -4,19 +4,22 @@ import * as movieAPI from 'services/movie-api';
 import { normalizeCast } from 'helpers/normalizeCast';
 import CastItem from 'components/CastItem/CastItem';
 import { AdditionalInfoList } from 'components/MovieCard/MovieCard.styled';
+import { ICast } from 'interfaces/ICast';
 
 export default function Cast() {
   const { id } = useParams();
 
-  const [cast, setCast] = useState([]);
+  const [cast, setCast] = useState<ICast[]>([]);
 
   useEffect(() => {
     const fetchMovieCast = async () => {
       try {
-        const response = await movieAPI.getMovieCredits(id);
-        const cast = normalizeCast(response.data.cast);
+        if (id) {
+          const response = await movieAPI.getMovieCredits(id);
+          const cast = normalizeCast(response.data.cast);
 
-        setCast(cast);
+          setCast(cast);
+        }
       } catch (error) {
         console.log(error);
       }

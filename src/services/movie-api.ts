@@ -1,4 +1,7 @@
+import { IMovie } from 'interfaces/IMovie';
 import axios from 'axios';
+import { IReview } from 'interfaces/IReviews';
+import { ICast } from 'interfaces/ICast';
 export let controller = new AbortController();
 
 const API_KEY =
@@ -12,25 +15,45 @@ axios.defaults.params = {
   include_adult: false,
 };
 
-function getTrendingMovies() {
+interface Movies {
+  data: { results: IMovie[] };
+}
+
+interface SingleMovie {
+  data: IMovie;
+}
+
+interface SingleReview {
+  data: {
+    results: IReview[];
+  };
+}
+
+interface SingleCast {
+  data: {
+    cast: ICast[];
+  };
+}
+
+function getTrendingMovies(): Promise<Movies> {
   return axios.get('trending/movie/day', {
     signal: controller.signal,
   });
 }
 
-function searchMovies(query, page = 1) {
+function searchMovies(query: string, page = 1): Promise<Movies> {
   return axios.get(`search/movie?query=${query}&page=${page}`);
 }
 
-function getMovieDetails(movieId) {
+function getMovieDetails(movieId: string): Promise<SingleMovie> {
   return axios.get(`movie/${movieId}`);
 }
 
-function getMovieCredits(movieId) {
+function getMovieCredits(movieId: string): Promise<SingleCast> {
   return axios.get(`movie/${movieId}/credits`);
 }
 
-function getMovieReviews(movieId) {
+function getMovieReviews(movieId: string): Promise<SingleReview> {
   return axios.get(`movie/${movieId}/reviews`);
 }
 

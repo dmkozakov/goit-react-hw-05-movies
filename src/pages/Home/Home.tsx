@@ -1,11 +1,11 @@
 import MovieList from 'components/MovieList/MovieList';
 import { normalizeMovies } from 'helpers/normalizeMovies';
+import { IMovie } from 'interfaces/IMovie';
 import { useEffect, useState } from 'react';
 import * as movieAPI from 'services/movie-api';
-// import { controller } from 'services/movie-api';
 
 export default function Home() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<IMovie[]>([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -20,13 +20,7 @@ export default function Home() {
     };
 
     fetchMovies();
-
-    // return () => {
-    //   console.log('Unmount');
-    //   controller.abort();
-    // };
   }, []);
-  // console.log(movies);
 
   return (
     <main>

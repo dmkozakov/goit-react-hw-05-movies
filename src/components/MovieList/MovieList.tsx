@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import {
   MovieListStyled,
@@ -6,8 +5,13 @@ import {
   Img,
   MovieInfo,
 } from './MovieList.styled';
+import { IMovie } from 'interfaces/IMovie';
 
-export default function MovieList({ movies }) {
+interface Props {
+  movies: IMovie[];
+}
+
+export default function MovieList({ movies }: Props) {
   const location = useLocation();
 
   return (
@@ -30,14 +34,3 @@ export default function MovieList({ movies }) {
     </MovieListStyled>
   );
 }
-
-MovieList.propTypes = {
-  movies: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      poster_path: PropTypes.string,
-      vote_average: PropTypes.string,
-    }).isRequired
-  ).isRequired,
-};

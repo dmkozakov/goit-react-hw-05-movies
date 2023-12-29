@@ -1,5 +1,4 @@
 import { Suspense, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import Spinner from 'components/Spinner/Spinner';
 import {
@@ -8,8 +7,13 @@ import {
   MovieContainer,
   AdditionalInfoLink,
 } from 'components/MovieCard/MovieCard.styled';
+import { IMovie } from 'interfaces/IMovie';
 
-export default function MovieCard({ movie }) {
+interface Props {
+  movie: IMovie;
+}
+
+export default function MovieCard({ movie }: Props) {
   const location = useLocation();
   const backLinkRef = useRef(location.state?.from ?? '/movies');
 
@@ -31,7 +35,15 @@ export default function MovieCard({ movie }) {
         <div>
           <h2>{title}</h2>
           <p>{vote_average}</p>
-          <ul>{genres && genres.map(genre => <li key={genre}>{genre}</li>)}</ul>
+          <ul>
+            {genres &&
+              genres.map(genre => {
+                if (typeof genre !== 'string') {
+                  return <li key={genre.name}>{genre}</li>;
+                }
+                return <li key={genre}>{genre}</li>;
+              })}
+          </ul>
           <p>{tagline}</p>
           <p>{overview}</p>
         </div>
@@ -46,14 +58,3 @@ export default function MovieCard({ movie }) {
     </div>
   );
 }
-
-MovieCard.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string,
-    poster_path: PropTypes.string,
-    vote_average: PropTypes.string,
-    tagline: PropTypes.string,
-    overview: PropTypes.string,
-    genres: PropTypes.arrayOf(PropTypes.string),
-  }).isRequired,
-};
